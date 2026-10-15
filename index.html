@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOOKPROMPT — 工具书 PROMPT 索引</title>
+<style>
+:root{
+  --ink:#111111;
+  --paper:#F4F3F0;
+  --line:#111111;
+  --line-soft:#11111122;
+  --mono:"SF Mono","IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --sans:"Helvetica Neue",Helvetica,"PingFang SC","Noto Sans SC",Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+::selection{background:#111;color:#F4F3F0}
+
+/* ---------- noise texture ---------- */
+.noisy{position:relative;isolation:isolate}
+.noisy::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.28;mix-blend-mode:overlay;
+}
+
+/* ---------- frame ---------- */
+.frame{
+  max-width:1280px;margin:0 auto;
+  border-left:1px solid var(--line);
+  border-right:1px solid var(--line);
+  min-height:100vh;
+  display:flex;
+}
+.rail{
+  width:52px;flex-shrink:0;
+  border-right:1px solid var(--line);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:120px;
+}
+.rail-text{
+  writing-mode:vertical-rl;
+  font-family:var(--mono);
+  font-size:10px;letter-spacing:.28em;
+  color:#111;
+  text-transform:uppercase;
+}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+@media(max-width:720px){
+  .rail{display:none}
+  .frame{border-left:none;border-right:none}
+}
+
+/* ---------- header ---------- */
+.header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:18px 28px;
+  border-bottom:1px solid var(--line);
+  gap:16px;
+}
+.header-title{
+  font-size:clamp(16px,2.4vw,22px);
+  font-weight:800;letter-spacing:-.02em;
+  text-transform:uppercase;white-space:nowrap;
+}
+.header-meta{
+  font-family:var(--mono);
+  font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;
+  text-align:right;line-height:1.7;
+  display:flex;align-items:flex-start;gap:20px;
+}
+.lang-toggle{display:flex;gap:0;border:1px solid var(--line)}
+.lang-btn{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  padding:5px 10px;text-transform:uppercase;
+}
+.lang-btn.active{background:var(--ink);color:var(--paper)}
+@media(max-width:720px){.header-meta .meta-lines{display:none}}
+
+/* ---------- hero statement ---------- */
+.statement{
+  padding:64px 28px 48px;
+  border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+}
+.statement h1{
+  font-size:clamp(34px,6vw,72px);
+  font-weight:800;letter-spacing:-.03em;line-height:1.02;
+  text-transform:uppercase;
+}
+.statement h1 .accent{color:var(--ink)}
+.statement h1 .outline{
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--ink);
+}
+.statement-right{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;line-height:2;text-align:right;
+  color:#111;max-width:280px;
+}
+@media(max-width:860px){
+  .statement{grid-template-columns:1fr}
+  .statement-right{text-align:left}
+}
+
+/* ---------- specimen boxes ---------- */
+.specimens{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--line);
+}
+.specimen{
+  border-right:1px solid var(--line);
+  aspect-ratio:4/3;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.specimen:last-child{border-right:none}
+.specimen .glyph{
+  font-size:clamp(60px,9vw,120px);
+  font-weight:800;line-height:1;
+  font-family:Georgia,serif;
+}
+.specimen .ref{
+  position:absolute;bottom:10px;right:12px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.specimen.colorful .glyph{mix-blend-mode:normal}
+.specimen .grad{position:absolute;inset:0;z-index:0}
+@media(max-width:720px){
+  .specimens{grid-template-columns:repeat(2,1fr)}
+  .specimen:nth-child(2n){border-right:none}
+  .specimen:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+
+/* ---------- index table ---------- */
+.table-section{flex:1}
+.index-head{
+  display:grid;
+  grid-template-columns:70px 1fr 220px 150px 90px;
+  gap:12px;
+  padding:12px 28px;
+  border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.index-row{
+  display:grid;
+  grid-template-columns:70px 1fr 220px 150px 90px;
+  gap:12px;align-items:center;
+  padding:20px 28px;
+  border-bottom:1px solid var(--line-soft);
+  cursor:pointer;
+  transition:background .15s;
+  position:relative;
+}
+.index-row:hover{background:#11111108}
+.index-row:hover .row-title{padding-left:10px}
+.row-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em}
+.row-title{
+  font-size:clamp(16px,2vw,21px);
+  font-weight:700;letter-spacing:-.01em;text-transform:uppercase;
+  transition:padding .2s;
+  display:flex;align-items:center;gap:14px;min-width:0;
+}
+.row-title-en{
+  font-family:Georgia,"Times New Roman",Times,serif;
+  font-size:12px;font-weight:400;letter-spacing:.02em;
+  color:#11111188;text-transform:none;font-style:italic;
+  white-space:nowrap;
+}
+@media(max-width:900px){.row-title-en{display:none}}
+.row-swatch{
+  width:34px;height:22px;border-radius:11px;flex-shrink:0;
+  border:1px solid #11111133;
+}
+.row-author{font-size:13px;color:#11111199}
+.row-cat{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#11111199}
+.row-count{font-family:var(--mono);font-size:10.5px;text-align:right;letter-spacing:.08em}
+@media(max-width:900px){
+  .index-head{display:none}
+  .index-row{grid-template-columns:50px 1fr 70px;row-gap:4px}
+  .row-author,.row-cat{display:none}
+}
+
+/* search bar */
+.searchbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;border-bottom:1px solid var(--line);
+  gap:16px;flex-wrap:wrap;
+}
+.searchbar input{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  border:none;background:none;outline:none;
+  text-transform:uppercase;flex:1;min-width:160px;color:var(--ink);
+}
+.searchbar input::placeholder{color:#11111155}
+.cat-filter{display:flex;gap:14px;flex-wrap:wrap}
+.cat-btn{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;padding:4px 0;
+  border-bottom:1px solid transparent;color:#11111177;
+}
+.cat-btn.active{color:var(--ink);border-bottom-color:var(--ink)}
+
+.empty{
+  padding:80px 28px;text-align:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:#11111177;
+}
+
+/* ---------- detail page ---------- */
+.detail-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+}
+.detail-top a:hover{text-decoration:underline}
+.detail-head{
+  display:grid;grid-template-columns:300px 1fr;
+  border-bottom:1px solid var(--line);
+}
+.detail-cover{
+  border-right:1px solid var(--line);
+  min-height:200px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:24px;
+}
+.detail-cover .dc-title{
+  font-size:30px;font-weight:800;line-height:1.1;
+  text-transform:uppercase;letter-spacing:-.02em;
+  mix-blend-mode:normal;position:relative;z-index:2;
+}
+.detail-cover .dc-author{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;position:relative;z-index:2;
+}
+.detail-cover .dc-ref{
+  position:absolute;top:20px;right:20px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  z-index:2;
+}
+.detail-info{padding:22px 28px}
+.detail-info h1{
+  font-size:clamp(22px,2.6vw,32px);font-weight:800;
+  text-transform:uppercase;letter-spacing:-.02em;line-height:1.05;
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+}
+.detail-title-en{
+  font-family:Georgia,"Times New Roman",Times,serif;
+  font-size:13px;font-weight:400;letter-spacing:.02em;
+  color:#11111188;text-transform:none;font-style:italic;
+  white-space:nowrap;
+}
+.detail-info .author{font-size:14px;color:#11111188;margin-top:8px}
+.detail-info .cats{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.cat-chip{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;border:1px solid var(--line);
+  padding:4px 10px;border-radius:999px;
+}
+.detail-summary{
+  margin-top:14px;padding:12px 0 0;
+  border-top:1px solid var(--line-soft);
+  font-size:13.5px;line-height:1.7;max-width:720px;color:#111111CC;
+}
+.detail-summary .label{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;margin-bottom:6px;color:#11111177;
+}
+@media(max-width:860px){
+  .detail-head{grid-template-columns:1fr}
+  .detail-cover{border-right:none;border-bottom:1px solid var(--line);min-height:220px}
+}
+
+/* prompt list */
+.prompt-row{border-bottom:1px solid var(--line-soft)}
+.prompt-row-head{
+  display:grid;
+  grid-template-columns:70px 1fr auto;
+  gap:16px;align-items:center;
+  padding:22px 28px;cursor:pointer;
+}
+.prompt-row-head:hover{background:#11111108}
+.prompt-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em}
+.prompt-title{font-size:clamp(15px,1.8vw,19px);font-weight:700;letter-spacing:-.01em}
+.prompt-sub{
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:#11111177;margin-top:5px;
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.prompt-actions{display:flex;gap:8px;align-items:center}
+.btn{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;
+  border:1px solid var(--line);
+  padding:8px 14px;border-radius:999px;
+  transition:all .15s;white-space:nowrap;
+}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:#000}
+.btn.copied{background:#1B7A3D;border-color:#1B7A3D;color:#fff}
+.prompt-body{display:none;padding:6px 28px 26px 98px}
+.prompt-row.open .prompt-body{display:block}
+.prompt-text{
+  border:1px solid var(--line);
+  padding:20px;position:relative;
+  font-family:var(--mono);font-size:11.5px;line-height:1.9;
+  white-space:pre-wrap;background:#fff;
+}
+.var-note{
+  margin-top:10px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.08em;text-transform:uppercase;color:#11111177;
+}
+.var-note code{
+  border:1px solid var(--line-soft);padding:1px 6px;border-radius:4px;
+  color:var(--ink);background:#fff;
+}
+@media(max-width:720px){
+  .prompt-row-head{grid-template-columns:1fr;gap:10px}
+  .prompt-body{padding:0 28px 24px}
+  .prompt-num{display:none}
+}
+
+/* ---------- footer ---------- */
+.footer{
+  border-top:1px solid var(--line);
+  padding:56px 28px 40px;
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+}
+.footer .big{
+  font-size:clamp(52px,9vw,110px);
+  font-weight:900;letter-spacing:-.03em;line-height:.92;
+  text-transform:uppercase;
+}
+.footer .addr{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;text-align:right;line-height:2;
+}
+.footer-bottom{
+  border-top:1px solid var(--line);
+  padding:14px 28px;
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:#11111177;
+}
+@media(max-width:720px){
+  .footer{grid-template-columns:1fr}
+  .footer .addr{text-align:left}
+}
+
+/* about */
+.about-block{padding:64px 28px;border-bottom:1px solid var(--line)}
+.about-block h1{
+  font-size:clamp(34px,6vw,72px);font-weight:800;
+  text-transform:uppercase;letter-spacing:-.03em;line-height:1.02;
+  margin-bottom:28px;
+}
+.about-block p{max-width:640px;font-size:15px;line-height:1.8;color:#111111CC}
+.about-grid{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.about-cell{padding:28px;border-right:1px solid var(--line-soft)}
+.about-cell:last-child{border-right:none}
+.about-cell .num{font-family:var(--mono);font-size:10px;letter-spacing:.14em;margin-bottom:14px;color:#11111177}
+.about-cell h3{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:8px}
+.about-cell p{font-size:12.5px;line-height:1.7;color:#111111AA}
+@media(max-width:860px){.about-grid{grid-template-columns:repeat(2,1fr)}}
+
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:var(--paper);
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  padding:12px 22px;
+  transition:transform .3s cubic-bezier(.2,.9,.3,1.2);
+  z-index:100;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <aside class="rail">
+    <span class="rail-text" id="railText">BOOKPROMPT_SYSTEM_LOG — VOL.01</span>
+  </aside>
+
+  <div class="main">
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+      <a href="#/" class="header-title" id="brandTitle">BOOKPROMPT = 工具书索引</a>
+      <div class="header-meta">
+        <div class="meta-lines">
+          <div id="metaCollection">COLLECTION: 经典工具书，2026</div>
+          <div id="metaLocation">LOCATION: SHELF / PROMPT_ARCHIVE</div>
+        </div>
+        <div class="lang-toggle" id="langToggle">
+          <button class="lang-btn active" data-lang="zh">中</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="app"></main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer-bottom">
+      <span id="footerCopy">© 2026 BOOKPROMPT · 方法论归原书作者所有，仅作学习交流</span>
+      <span id="footerNote">AI 抽取 × 人工审核</span>
+    </footer>
+  </div>
+</div>
+
+<div class="toast" id="toast">COPIED ✓ <span id="toastText"></span></div>
+
+<script>
+/* =========================================================
+   i18n
+========================================================= */
+const I18N = {
+  zh: {
+    brand: "BOOKPROMPT = 工具书索引",
+    meta_collection: "COLLECTION: 经典工具书，2026",
+    meta_location: "LOCATION: 书架 / PROMPT_ARCHIVE",
+    rail: "BOOKPROMPT_SYSTEM_LOG — 卷.01",
+    st_1: "不读书，",
+    st_2: "也能用上",
+    st_3: "书里的方法论",
+    st_note: "我们把《金字塔原理》《非暴力沟通》等经典好书，提炼成可直接复制使用的 Prompt。粘贴到你的 AI 对话中，让每本书成为随取随用的 AI 军师。",
+    footer_big: "工具书<br>索引<br>INDEX",
+    footer_addr: "2026 — ∞<br>PROMPT 档案馆<br>一本书 = 一位 AI 军师<br>复制。粘贴。思考。",
+    search_ph: "搜索书名 / 作者…",
+    th_no: "编号", th_title: "书名_SPECIMEN", th_author: "作者_ORIGIN", th_cat: "分类", th_mark: "MARK",
+    all: "全部",
+    prompts_unit: "PROMPT",
+    empty: "未找到相关书籍 — 试试其他关键词",
+    back: "← 返回索引",
+    summary_label: "全书方法论概述 / METHOD_OVERVIEW",
+    view: "展开全文",
+    hide: "收起",
+    copy: "复制",
+    copied: "已复制",
+    var_pre: "复制后替换",
+    var_mid: "为你的实际内容",
+    toast: "已复制到剪贴板",
+    not_found_t: "BOOK 404 — 书籍不存在或已下架",
+    not_found_d: "返回索引，看看其他书籍",
+    about_t1: "把一本书，",
+    about_t2: "变成一位 AI 军师",
+    about_p: "书到用时方恨少——真正需要方法论的 moment（写报告、做沟通、做决策）早已脱离书本。BOOKPROMPT 把经典工具书的方法论提炼成 Prompt，在你和 AI 对话的每一个瞬间随取随用。",
+    a1t: "精选好书", a1d: "只选经过时间检验的经典工具书：思维、沟通、写作、决策、效率五大方向。",
+    a2t: "AI 抽取", a2d: "按章节将方法论提炼为结构化 Prompt：角色设定 + 方法步骤 + {{变量}}。",
+    a3t: "人工审核", a3d: "每条 Prompt 均经人工审核，保证忠实于原书、步骤清晰可用。",
+    a4t: "一键复制", a4d: "粘贴到任何 AI（ChatGPT / Claude / Gemini…），替换变量即可开始。",
+    footer_copy: "© 2026 BOOKPROMPT · 方法论归原书作者所有，仅作学习交流",
+    footer_note: "AI 抽取 × 人工审核",
+  },
+  en: {
+    brand: "BOOKPROMPT = INDEX",
+    meta_collection: "COLLECTION: CLASSIC BOOKS, 2026",
+    meta_location: "LOCATION: SHELF / PROMPT_ARCHIVE",
+    rail: "BOOKPROMPT_SYSTEM_LOG — VOL.01",
+    st_1: "Skip the reading.",
+    st_2: "",
+    st_3: "Keep the wisdom.",
+    st_note: "We distill classics like The Pyramid Principle into copy-ready prompts. Paste one into your AI chat — every book becomes an on-demand advisor.",
+    footer_big: "BOOK<br>PROMPT<br>INDEX",
+    footer_addr: "2026 — ∞<br>PROMPT ARCHIVE<br>EVERY BOOK = AN AI ADVISOR<br>COPY. PASTE. THINK.",
+    search_ph: "SEARCH TITLE / AUTHOR…",
+    th_no: "NO.", th_title: "TITLE_SPECIMEN", th_author: "AUTHOR_ORIGIN", th_cat: "CATEGORY", th_mark: "MARK",
+    all: "ALL",
+    prompts_unit: "PROMPTS",
+    empty: "NO BOOKS FOUND — TRY ANOTHER KEYWORD",
+    back: "← BACK TO INDEX",
+    summary_label: "METHOD_OVERVIEW",
+    view: "VIEW",
+    hide: "CLOSE",
+    copy: "COPY",
+    copied: "COPIED",
+    var_pre: "AFTER COPYING, REPLACE",
+    var_mid: "WITH YOUR OWN CONTENT",
+    toast: "COPIED TO CLIPBOARD",
+    not_found_t: "BOOK 404 — NOT FOUND OR UNPUBLISHED",
+    not_found_d: "Back to index to see other books",
+    about_t1: "One book,",
+    about_t2: "one AI advisor.",
+    about_p: "The moment you truly need a methodology is long after you've closed the book. BOOKPROMPT distills classic books into prompts — ready in every conversation with AI.",
+    a1t: "Curated Books", a1d: "Time-tested classics across five domains: thinking, communication, writing, decisions, habits.",
+    a2t: "AI Extraction", a2d: "Each chapter distilled into structured prompts: role + steps + {{variables}}.",
+    a3t: "Human Review", a3d: "Every prompt reviewed by humans — faithful to the original framework.",
+    a4t: "One-Click Copy", a4d: "Paste into any AI (ChatGPT / Claude / Gemini…), fill the variables, go.",
+    footer_copy: "© 2026 BOOKPROMPT · METHODOLOGY BELONGS TO ORIGINAL AUTHORS",
+    footer_note: "AI EXTRACTION × HUMAN REVIEW",
+  }
+};
+
+/* =========================================================
+   DATA — 由 data.json 动态加载（CATEGORIES / BOOKS）
+   数据来源：飞书多维表格 → 导出 JSON → 替换 data.json
+========================================================= */
+let CATEGORIES = [];
+let BOOKS = [];
+/* =========================================================
+   STATE
+========================================================= */
+let lang = "zh";
+let activeCategory = "all";
+let searchTerm = "";
+let currentBook = null;
+
+const t = (k) => I18N[lang][k] || k;
+const L = (o) => o[lang] || o.zh;
+const catName = (id) => { const c = CATEGORIES.find(c=>c.id===id); return c ? L(c) : id; };
+
+function showToast(msg){
+  const toast = document.getElementById("toast");
+  document.getElementById("toastText").textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>toast.classList.remove("show"), 2000);
+}
+
+function copyText(text){
+  const done = () => showToast(t("toast"));
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  } else fallbackCopy(text,done);
+}
+function fallbackCopy(text,done){
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.cssText="position:fixed;opacity:0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); done(); }catch(e){}
+  document.body.removeChild(ta);
+}
+const varNames = (body) => [...new Set(body.match(/\{\{(.+?)\}\}/g) || [])];
+const escapeHtml = (s) => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+/* =========================================================
+   HOME
+========================================================= */
+function renderHome(){
+  const app = document.getElementById("app");
+  const totalPrompts = BOOKS.reduce((s,b)=>s+b.prompts.length,0);
+
+  const filtered = BOOKS.filter(b=>{
+    const okCat = activeCategory==="all" || b.categories.includes(activeCategory);
+    const q = searchTerm.trim().toLowerCase();
+    const okQ = !q || b.title.zh.toLowerCase().includes(q) || b.title.en.toLowerCase().includes(q)
+      || b.author.zh.toLowerCase().includes(q) || b.author.en.toLowerCase().includes(q);
+    return okCat && okQ;
+  });
+
+  app.innerHTML = `
+  <!-- statement -->
+  <section class="statement">
+    <h1>${t("st_1")}<br>${t("st_2")}<span class="outline">${t("st_3")}</span></h1>
+    <div class="statement-right">${t("st_note")}<br><br>INDEX: ${BOOKS.length} BOOKS / ${totalPrompts} PROMPTS</div>
+  </section>
+
+  <!-- specimen strip -->
+  <!-- search & filter -->
+  <div class="searchbar">
+    <input id="searchInput" type="text" placeholder="${t("search_ph")}" value="${searchTerm.replace(/"/g,"&quot;")}">
+    <div class="cat-filter">
+      <button class="cat-btn ${activeCategory==="all"?"active":""}" data-cat="all">${t("all")}</button>
+      ${CATEGORIES.map(c=>`<button class="cat-btn ${activeCategory===c.id?"active":""}" data-cat="${c.id}">${L(c)}</button>`).join("")}
+    </div>
+  </div>
+
+  <!-- index table -->
+  <section class="table-section">
+    <div class="index-head">
+      <span>${t("th_no")}</span><span>${t("th_title")}</span><span>${t("th_author")}</span><span>${t("th_cat")}</span><span style="text-align:right">${t("th_mark")}</span>
+    </div>
+    ${filtered.length ? filtered.map((b,i)=>`
+    <a class="index-row" href="#/book/${b.id}">
+      <span class="row-num">${String(i+1).padStart(3,"0")}</span>
+      <span class="row-title"><span class="row-swatch noisy" style="background:${b.grad}"></span>${L(b.title)}${lang==="zh"?`<span class="row-title-en">${b.title.en}</span>`:""}</span>
+      <span class="row-author">${L(b.author)}</span>
+      <span class="row-cat">${b.categories.map(catName).join(" / ")}</span>
+      <span class="row-count">${b.prompts.length} ${t("prompts_unit")}</span>
+    </a>`).join("") : `<div class="empty">${t("empty")}</div>`}
+  </section>`;
+
+  /* re-bind events */
+  document.getElementById("searchInput").addEventListener("input", e=>{
+    searchTerm = e.target.value;
+    renderHome(); restoreFocus();
+  });
+  document.querySelectorAll(".cat-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ activeCategory = btn.dataset.cat; renderHome(); });
+  });
+}
+function restoreFocus(){
+  const inp = document.getElementById("searchInput");
+  if(inp){ inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+}
+
+/* =========================================================
+   DETAIL
+========================================================= */
+function renderDetail(bookId){
+  const app = document.getElementById("app");
+  const b = BOOKS.find(x=>x.id===bookId);
+  currentBook = b || null;
+
+  if(!b){
+    app.innerHTML = `
+    <div style="padding:100px 28px;text-align:center">
+      <div class="empty" style="padding:0 0 20px">${t("not_found_t")}<br><br>${t("not_found_d")}</div>
+      <a href="#/" class="btn solid">${t("back")}</a>
+    </div>`;
+    return;
+  }
+
+  app.innerHTML = `
+  <div class="detail-top">
+    <a href="#/">${t("back")}</a>
+    <span>REF_${b.id.toUpperCase().slice(0,8)} / ${b.prompts.length} ${t("prompts_unit")}</span>
+  </div>
+
+  <section class="detail-head">
+    <div class="detail-cover noisy" style="background:${b.grad}">
+      <span class="dc-ref">REF_${String(BOOKS.indexOf(b)+1).padStart(3,"0")}</span>
+      <div class="dc-title">${L(b.title)}</div>
+      <div class="dc-author">${L(b.author)}</div>
+    </div>
+    <div class="detail-info">
+      <h1>${L(b.title)}${lang==="zh"?`<span class="detail-title-en">${b.title.en}</span>`:""}</h1>
+      <div class="author">${L(b.author)}</div>
+      <div class="cats">${b.categories.map(c=>`<span class="cat-chip">${catName(c)}</span>`).join("")}</div>
+      <div class="detail-summary">
+        <div class="label">${t("summary_label")}</div>
+        ${L(b.summary)}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    ${b.prompts.map((p,i)=>renderPrompt(p,i)).join("")}
+  </section>`;
+}
+
+function renderPrompt(p,i){
+  const vars = varNames(p.body);
+  return `
+  <div class="prompt-row" id="prompt-${i}">
+    <div class="prompt-row-head" onclick="togglePrompt(${i})">
+      <span class="prompt-num">P.${i+1}</span>
+      <div>
+        <div class="prompt-title">${L(p.title)}</div>
+        <div class="prompt-sub">
+          <span>${L(p.chapter)}</span>
+          <span>${p.tags.join(" ")}</span>
+          <span>${L(p.desc)}</span>
+        </div>
+      </div>
+      <div class="prompt-actions" onclick="event.stopPropagation()">
+        <button class="btn" onclick="togglePrompt(${i})">${t("view")}</button>
+        <button class="btn solid" onclick="copyPrompt(${i})" id="copyBtn-${i}">${t("copy")} ↑</button>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text">${escapeHtml(p.body)}</div>
+      ${vars.length?`<div class="var-note">${t("var_pre")} ${vars.map(v=>`<code>${v}</code>`).join(" ")} ${t("var_mid")}</div>`:""}
+    </div>
+  </div>`;
+}
+
+function togglePrompt(i){
+  const row = document.getElementById(`prompt-${i}`);
+  row.classList.toggle("open");
+}
+
+function copyPrompt(i){
+  if(!currentBook) return;
+  const p = currentBook.prompts[i];
+  copyText(p.body);
+  const btn = document.getElementById(`copyBtn-${i}`);
+  btn.classList.add("copied");
+  btn.textContent = `${t("copied")} ✓`;
+  setTimeout(()=>{
+    btn.classList.remove("copied");
+    btn.textContent = `${t("copy")} ↑`;
+  },2000);
+}
+
+/* =========================================================
+   ABOUT
+========================================================= */
+function renderAbout(){
+  const app = document.getElementById("app");
+  app.innerHTML = `
+  <section class="about-block">
+    <h1>${t("about_t1")}<br><span style="color:transparent;-webkit-text-stroke:1.5px var(--ink)">${t("about_t2")}</span></h1>
+    <p>${t("about_p")}</p>
+  </section>
+  <section class="about-grid">
+    <div class="about-cell"><div class="num">01</div><h3>${t("a1t")}</h3><p>${t("a1d")}</p></div>
+    <div class="about-cell"><div class="num">02</div><h3>${t("a2t")}</h3><p>${t("a2d")}</p></div>
+    <div class="about-cell"><div class="num">03</div><h3>${t("a3t")}</h3><p>${t("a3d")}</p></div>
+    <div class="about-cell"><div class="num">04</div><h3>${t("a4t")}</h3><p>${t("a4d")}</p></div>
+  </section>`;
+}
+
+/* =========================================================
+   ROUTER & I18N
+========================================================= */
+function route(){
+  const hash = location.hash || "#/";
+  if(hash.startsWith("#/book/")) renderDetail(hash.replace("#/book/",""));
+  else if(hash === "#/about") renderAbout();
+  else renderHome();
+  window.scrollTo(0,0);
+}
+
+function applyStaticText(){
+  document.getElementById("brandTitle").textContent = t("brand");
+  document.getElementById("metaCollection").textContent = t("meta_collection");
+  document.getElementById("metaLocation").textContent = t("meta_location");
+  document.getElementById("railText").textContent = t("rail");
+  document.getElementById("footerCopy").textContent = t("footer_copy");
+  document.getElementById("footerNote").textContent = t("footer_note");
+  document.documentElement.lang = lang==="en" ? "en" : "zh-CN";
+}
+
+function applyLang(){
+  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active", b.dataset.lang===lang));
+  applyStaticText();
+  route();
+}
+
+document.getElementById("langToggle").addEventListener("click", e=>{
+  const btn = e.target.closest(".lang-btn");
+  if(!btn || btn.dataset.lang===lang) return;
+  lang = btn.dataset.lang;
+  applyLang();
+});
+
+window.addEventListener("hashchange", route);
+
+/* =========================================================
+   INIT — 加载 data.json 后渲染
+========================================================= */
+async function initData(){
+  try{
+    const res = await fetch("data.json");
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    CATEGORIES = data.categories || [];
+    BOOKS = data.books || [];
+  }catch(e){
+    document.getElementById("app").innerHTML =
+      '<div class="empty" style="padding:100px 28px">DATA LOAD FAILED — 无法加载 data.json<br>请通过本地服务器（python3 -m http.server）访问，而非直接双击文件</div>';
+    console.error(e);
+    return;
+  }
+  applyStaticText();
+  route();
+}
+initData();
+</script>
+</body>
+</html>

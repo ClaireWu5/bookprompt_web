@@ -1,0 +1,205 @@
+{
+  "categories": [
+    { "id": "communication", "zh": "沟通表达", "en": "COMM" },
+    { "id": "thinking", "zh": "思维方法", "en": "THINK" },
+    { "id": "writing", "zh": "写作", "en": "WRITE" },
+    { "id": "decision", "zh": "决策", "en": "DECIDE" },
+    { "id": "habits", "zh": "效率习惯", "en": "HABIT" }
+  ],
+  "books": [
+    {
+      "id": "pyramid",
+      "grad": "linear-gradient(120deg,#7FB069 0%,#E3B23C 55%,#D96C3F 100%)",
+      "title": { "zh": "金字塔原理", "en": "The Pyramid Principle" },
+      "author": { "zh": "芭芭拉·明托", "en": "Barbara Minto" },
+      "desc": { "zh": "麦肯锡经典思考与写作方法，先结论后原因", "en": "McKinsey's classic: conclusion first" },
+      "categories": ["thinking", "writing"],
+      "summary": {
+        "zh": "任何表达都应呈现为一个金字塔：顶端是核心结论，向下逐层展开支撑论据。组织思想遵循四条原则——结论先行、以上统下、归类分组、逻辑递进。先想清楚，再写出来。",
+        "en": "Any writing should form a pyramid: one governing thought at the top, supported by grouped ideas below. Four rules: conclusion first, ideas support ideas above, similar ideas grouped, ideas in logical order."
+      },
+      "prompts": [
+        {
+          "id": "pyramid-1",
+          "chapter": { "zh": "CH.01 为什么要用金字塔结构", "en": "CH.01 WHY A PYRAMID" },
+          "title": { "zh": "用金字塔原理重构我的汇报", "en": "Restructure my report with the Pyramid Principle" },
+          "desc": { "zh": "把杂乱的汇报草稿重组成结论先行的金字塔结构", "en": "Turn a messy draft into a conclusion-first pyramid" },
+          "tags": ["#汇报", "#写作"],
+          "body": "你是一位精通《金字塔原理》的表达教练。\n\n请将我提供的汇报草稿重构为金字塔结构，要求：\n1. 提炼出唯一的核心结论（一句话，放在最开头）；\n2. 用 3 个以内的分论点支撑核心结论，每个分论点彼此独立（MECE）；\n3. 每个分论点下补充 1~2 条具体论据或数据；\n4. 检查逻辑顺序，按照重要性或时间排列。\n\n最后，用一句话指出我的原稿最大的结构问题。\n\n【我的汇报草稿】\n{{我的汇报草稿}}"
+        },
+        {
+          "id": "pyramid-2",
+          "chapter": { "zh": "CH.03 如何构建金字塔", "en": "CH.03 BUILDING THE PYRAMID" },
+          "title": { "zh": "30 秒电梯汇报生成器", "en": "30-Second Elevator Pitch Generator" },
+          "desc": { "zh": "把任意复杂方案压缩成 30 秒讲清的电梯陈述", "en": "Compress any proposal into a 30-second pitch" },
+          "tags": ["#汇报", "#沟通"],
+          "body": "你是一位麦肯锡式的沟通顾问，深谙电梯测验。\n\n请把我的方案压缩成一段 30 秒内讲完的电梯汇报：\n1. 第一句话直接给出结论或请求；\n2. 用「背景—冲突—疑问—回答」(SCQA) 框架组织叙述；\n3. 总字数不超过 120 字，口语化、有画面感；\n4. 结尾给出一句话明确下一步行动。\n\n【我的方案说明】\n{{我的方案说明}}\n\n【我的沟通对象】\n{{沟通对象，如：老板/客户/投资人}}"
+        },
+        {
+          "id": "pyramid-3",
+          "chapter": { "zh": "CH.06 如何呈现逻辑顺序", "en": "CH.06 ORDER OF IDEAS" },
+          "title": { "zh": "检查我的文章逻辑顺序", "en": "Check my writing's logical order" },
+          "desc": { "zh": "诊断段落顺序问题，给出更合理的编排", "en": "Diagnose paragraph ordering issues" },
+          "tags": ["#写作", "#修改"],
+          "body": "你是一位严谨的写作编辑，专注于《金字塔原理》中的逻辑顺序原则。\n\n请检查我的文章段落顺序：\n1. 判断目前的顺序属于时间顺序、结构顺序还是程度顺序；\n2. 指出顺序混乱或归类不当的具体段落；\n3. 给出重新编排后的段落顺序（用编号列出）；\n4. 每处调整附一句理由。\n\n只做结构调整，不改动我的措辞。\n\n【我的文章】\n{{我的文章}}"
+        }
+      ]
+    },
+    {
+      "id": "nvc",
+      "grad": "linear-gradient(120deg,#B0413E 0%,#5B4A6E 55%,#3E5F8A 100%)",
+      "title": { "zh": "非暴力沟通", "en": "Nonviolent Communication" },
+      "author": { "zh": "马歇尔·卢森堡", "en": "Marshall Rosenberg" },
+      "desc": { "zh": "用观察、感受、需要、请求四步化解冲突", "en": "Resolve conflict in four steps" },
+      "categories": ["communication"],
+      "summary": {
+        "zh": "语言可以是墙，也可以是窗。非暴力沟通提供四要素框架：不带评判地观察、表达感受、说出需要、提出具体请求。先连接情绪，再解决问题。",
+        "en": "Language can be a wall or a window. NVC offers four steps: observe without judgment, express feelings, name needs, make clear requests. Connect emotionally before solving."
+      },
+      "prompts": [
+        {
+          "id": "nvc-1",
+          "chapter": { "zh": "CH.03 区分观察和评论", "en": "CH.03 OBSERVING VS EVALUATING" },
+          "title": { "zh": "帮我改写一句伤人的话", "en": "Rewrite a hurtful sentence for me" },
+          "desc": { "zh": "把指责性的话翻译成非暴力沟通表达", "en": "Translate blame into NVC language" },
+          "tags": ["#沟通", "#关系"],
+          "body": "你是一位非暴力沟通（NVC）教练。\n\n我想说一句容易引发冲突的话，请帮我用 NVC 四要素改写：\n1. 观察：只陈述事实，不带任何评判词（如「总是」「从不」）；\n2. 感受：表达我的情绪，而非想法（区分「我觉得被忽视」和「我觉得你不在乎我」）；\n3. 需要：说出这个感受背后的内心需要；\n4. 请求：提出具体、可执行、正向的请求。\n\n给出改写版本后，解释每一步的转换逻辑。\n\n【我原本想说的话】\n{{我原本想说的话}}\n\n【当时的情境】\n{{当时的情境}}"
+        },
+        {
+          "id": "nvc-2",
+          "chapter": { "zh": "CH.05 感受的根源", "en": "CH.05 ROOTS OF FEELINGS" },
+          "title": { "zh": "冲突场景对话演练", "en": "Conflict conversation rehearsal" },
+          "desc": { "zh": "在正式沟通前排练，AI 扮演对方进行模拟", "en": "Rehearse a hard conversation; AI plays the other side" },
+          "tags": ["#沟通", "#演练"],
+          "body": "你是一位非暴力沟通培训师。请和我进行一场对话演练。\n\n情境：{{我想沟通的情境}}\n\n规则：\n1. 你扮演沟通对象{{对方，如：我的同事/家人}}，按照其可能的立场和情绪回应我；\n2. 每轮对话后，你先以角色身份回应，再切换为教练身份，用一句话点评我的表达哪里符合或偏离了 NVC 四要素；\n3. 如果我的表达出现评判、指责或模糊请求，请指出并给出改进版；\n4. 演练 5 轮后，总结我的沟通模式与改进建议。\n\n现在请开始，先以角色身份说第一句话。"
+        }
+      ]
+    },
+    {
+      "id": "asking",
+      "grad": "linear-gradient(120deg,#3D5A45 0%,#6E8898 55%,#C9D6C5 100%)",
+      "title": { "zh": "学会提问", "en": "Asking the Right Questions" },
+      "author": { "zh": "尼尔·布朗 & 基利", "en": "Browne & Keeley" },
+      "desc": { "zh": "批判性思维入门：用 10 个问题拆解任何论证", "en": "Dissect any argument with 10 questions" },
+      "categories": ["thinking"],
+      "summary": {
+        "zh": "面对任何观点，先问三个问题：论题是什么？理由是什么？哪些词语有歧义？再检查推理中的谬误与隐藏假设。批判性思维不是抬杠，而是对自己所信之事负责。",
+        "en": "For any claim, ask: What's the issue? What are the reasons? Which words are ambiguous? Then hunt for fallacies and hidden assumptions."
+      },
+      "prompts": [
+        {
+          "id": "asking-1",
+          "chapter": { "zh": "CH.02-04 论题、理由与歧义", "en": "CH.02-04 ISSUES, REASONS, AMBIGUITY" },
+          "title": { "zh": "拆解这篇文章的论证结构", "en": "Dissect this article's argument" },
+          "desc": { "zh": "像批判性思维教练一样逐层分析任意观点", "en": "Analyze any opinion layer by layer" },
+          "tags": ["#批判性思维", "#阅读"],
+          "body": "你是一位《学会提问》式的批判性思维教练。\n\n请对以下内容做论证拆解：\n1. 找出论题（描述性还是规定性？）和结论；\n2. 列出支持结论的全部理由；\n3. 标出含义模糊、需要定义的关键词；\n4. 找出至少 2 处隐藏假设；\n5. 检查是否存在常见谬误（诉诸权威、滑坡、稻草人、幸存者偏差等）；\n6. 最后给出：这篇文章最脆弱的一环是什么？\n\n【待分析的内容】\n{{文章或观点}}"
+        },
+        {
+          "id": "asking-2",
+          "chapter": { "zh": "CH.07 证据的效力", "en": "CH.07 HOW GOOD IS THE EVIDENCE" },
+          "title": { "zh": "这个说法可靠吗？证据质量评估", "en": "Is this claim reliable? Evidence check" },
+          "desc": { "zh": "评估一段话背后证据的强度与漏洞", "en": "Rate the strength of the evidence behind a claim" },
+          "tags": ["#批判性思维", "#决策"],
+          "body": "你是一位证据审查专家，遵循《学会提问》的证据效力框架。\n\n请评估这个说法的可靠性：{{待评估的说法}}\n\n请按以下维度分析：\n1. 证据类型是什么？（直觉/个人经历/典型案例/当事人证词/专家意见/科学研究）\n2. 该类型证据的固有局限是什么？\n3. 证据来源是否可查证？有无利益相关？\n4. 样本量和代表性如何（如果是研究或调查）？\n5. 有没有替代解释？\n6. 结论：可信度打分（1~10），以及「要让我更信服，还需要什么证据」。\n\n【补充背景（可选）】\n{{补充背景}}"
+        }
+      ]
+    },
+    {
+      "id": "seven-habits",
+      "grad": "linear-gradient(120deg,#5B4A6E 0%,#9A5B6E 55%,#E0A458 100%)",
+      "title": { "zh": "高效能人士的七个习惯", "en": "The 7 Habits of Highly Effective People" },
+      "author": { "zh": "史蒂芬·柯维", "en": "Stephen R. Covey" },
+      "desc": { "zh": "从依赖到独立再到互赖的个人成长操作系统", "en": "A growth OS: dependence to interdependence" },
+      "categories": ["habits"],
+      "summary": {
+        "zh": "先赢得自我的胜利（积极主动、以终为始、要事第一），再追求公众的胜利（双赢思维、知彼解己、统合综效），并持续更新。核心是从「关注圈」走向「影响圈」。",
+        "en": "Win private victories first (be proactive, begin with the end in mind, first things first), then public ones (win-win, understand first, synergize). Focus on your circle of influence."
+      },
+      "prompts": [
+        {
+          "id": "habits-1",
+          "chapter": { "zh": "习惯2 以终为始", "en": "HABIT 2: BEGIN WITH THE END IN MIND" },
+          "title": { "zh": "帮我做一次以终为始的目标梳理", "en": "Begin-with-the-end-in-mind goal session" },
+          "desc": { "zh": "从人生愿景倒推当下应该做什么", "en": "Work backward from vision to today's actions" },
+          "tags": ["#目标", "#规划"],
+          "body": "你是一位深受史蒂芬·柯维影响的成长教练。\n\n请引导我完成一次「以终为始」的目标梳理：\n1. 先问我 3 个澄清性问题（一次只问一个），帮我描绘 5~10 年后期望的样子；\n2. 基于我的回答，写出我的个人使命宣言草稿（不超过 100 字）；\n3. 从使命宣言倒推出：3 年方向 → 今年的 1~3 个关键目标 → 本月最重要的一件事；\n4. 指出我的目标中哪些属于「关注圈」（无法控制），建议如何转化为「影响圈」行动。\n\n【我目前的困惑或现状】\n{{我的现状描述}}"
+        },
+        {
+          "id": "habits-2",
+          "chapter": { "zh": "习惯3 要事第一", "en": "HABIT 3: FIRST THINGS FIRST" },
+          "title": { "zh": "用四象限法整理我的待办清单", "en": "Sort my to-do list with the Eisenhower matrix" },
+          "desc": { "zh": "区分重要与紧急，重新规划一周的优先级", "en": "Separate important from urgent" },
+          "tags": ["#时间管理", "#效率"],
+          "body": "你是一位时间管理教练，严格遵循柯维的四象限法则。\n\n这是我的待办清单：\n{{我的待办清单}}\n\n请：\n1. 把每项任务归入四象限（重要紧急/重要不紧急/紧急不重要/不重要不紧急）；\n2. 对第三象限的任务，建议删除、委派或简化的具体做法；\n3. 对第四象限的任务，直接建议删除并说明理由；\n4. 把第一、二象限任务排成一周计划，每天不超过 3 件要事；\n5. 特别标注：哪些第二象限任务（预防性、成长性）最容易被我忽略？"
+        }
+      ]
+    },
+    {
+      "id": "on-writing",
+      "grad": "linear-gradient(120deg,#2F5D62 0%,#5B8A8A 55%,#D8C3A5 100%)",
+      "title": { "zh": "风格的要素", "en": "The Elements of Style" },
+      "author": { "zh": "威廉·斯特伦克", "en": "William Strunk Jr." },
+      "desc": { "zh": "写作圣经：删掉一切冗余，让每个词都有用", "en": "The bible of clear writing: omit needless words" },
+      "categories": ["writing"],
+      "summary": {
+        "zh": "有力的写作是简洁的。删掉一切冗余的词、无用的修饰和被动语态；让句子只保留主干，让段落只有一个中心。清晰的思考带来清晰的文字，反之亦然。",
+        "en": "Vigorous writing is concise. Omit needless words, dead modifiers, and the passive voice. Clear thinking makes clear writing, and vice versa."
+      },
+      "prompts": [
+        {
+          "id": "style-1",
+          "chapter": { "zh": "规则17 删掉冗余的词", "en": "RULE 17: OMIT NEEDLESS WORDS" },
+          "title": { "zh": "帮我把这段话删到最简", "en": "Trim my paragraph to the bone" },
+          "desc": { "zh": "保留原意的前提下最大程度精简文字", "en": "Same meaning, far fewer words" },
+          "tags": ["#写作", "#精简"],
+          "body": "你是一位信奉《风格的要素》的编辑，信条是「删掉一切冗余的词」。\n\n请处理我的文字：\n1. 给出精简版：只保留主干，删掉冗词、套话、无意义的修饰，原文的每个信息点都不得丢失；\n2. 标出你删除的部分，并归类（冗余词/被动语态/重复表达/空洞修饰）；\n3. 把所有被动句改为主动句；\n4. 最后报告：原文 X 字 → 精简后 Y 字，压缩率 Z%。\n\n【我的文字】\n{{我的文字}}"
+        }
+      ]
+    },
+    {
+      "id": "thinking-fast",
+      "grad": "linear-gradient(120deg,#7A4436 0%,#B3766B 55%,#E3B23C 100%)",
+      "title": { "zh": "思考，快与慢", "en": "Thinking, Fast and Slow" },
+      "author": { "zh": "丹尼尔·卡尼曼", "en": "Daniel Kahneman" },
+      "desc": { "zh": "认识直觉偏差，让重大决策慢下来", "en": "Know your biases; slow down big decisions" },
+      "categories": ["decision", "thinking"],
+      "summary": {
+        "zh": "大脑有两套系统：快速直觉的系统1和缓慢理性的系统2。多数判断偏差——锚定效应、损失厌恶、可得性偏差——源于对系统1的过度信任。重大决策需要主动启用系统2。",
+        "en": "The mind runs two systems: fast intuition and slow reason. Most biases — anchoring, loss aversion, availability — come from over-trusting System 1."
+      },
+      "prompts": [
+        {
+          "id": "fast-1",
+          "chapter": { "zh": "CH.12-13 锚定与可得性", "en": "CH.12-13 ANCHORS & AVAILABILITY" },
+          "title": { "zh": "决策前的偏差体检", "en": "Pre-decision bias checkup" },
+          "desc": { "zh": "重大决定前，系统排查你可能的认知偏差", "en": "Scan for cognitive biases before deciding" },
+          "tags": ["#决策", "#自查"],
+          "body": "你是一位行为经济学顾问，精通卡尼曼的认知偏差理论。\n\n我正在做一个决定：{{我正在做的决定}}\n\n请给我做一次「偏差体检」：\n1. 依次检查以下偏差是否可能影响我：锚定效应、损失厌恶、可得性偏差、确认偏误、框架效应、光环效应；\n2. 每项偏差：先问自己「我的情境里有没有这个迹象」，给出判断依据；\n3. 对命中的偏差，给出一个具体的「去偏差」动作（如：换个参照点重新估算、列出反例、考虑相反决定的好处）；\n4. 最后给出建议：这个决定该用系统1快速定，还是值得启动系统2慢想 24 小时？\n\n【我的初步倾向】\n{{我的初步倾向}}"
+        }
+      ]
+    },
+    {
+      "id": "full-engagement",
+      "grad": "linear-gradient(120deg,#E07A5F 0%,#F2CC8F 55%,#81B29A 100%)",
+      "title": { "zh": "精力管理", "en": "The Power of Full Engagement" },
+      "author": { "zh": "吉姆·洛尔 & 托尼·施瓦茨", "en": "Jim Loehr & Tony Schwartz" },
+      "desc": { "zh": "管理精力而非时间，用仪式习惯而非意志力", "en": "Manage energy, not time" },
+      "categories": ["habits"],
+      "summary": {
+        "zh": "每一天的时间总量固定，但精力的储备和质量可以改变。精力像肌肉，有节奏地「消耗—恢复」才能越用越强。精力分体能、情感、思维、意志四个维度，互相咬合；而持久的改变靠仪式习惯，而非意志力硬撑。",
+        "en": "Time is fixed, but energy can be expanded and renewed. Like muscles, energy grows through rhythmic expenditure and recovery. Four dimensions — physical, emotional, mental, spiritual — interlock; lasting change relies on rituals, not willpower."
+      },
+      "prompts": [
+        {
+          "id": "energy-1",
+          "chapter": { "zh": "全书 精力金字塔与仪式习惯", "en": "FULL BOOK: THE ENERGY PYRAMID & RITUALS" },
+          "title": { "zh": "AI 精力管理教练：评估我的精力现状", "en": "AI energy coach: assess my energy" },
+          "desc": { "zh": "多轮对话评估四维精力，产出个人精力管理方案", "en": "Multi-turn assessment producing a personal energy plan" },
+          "tags": ["#精力管理", "#自我提升"],
+          "body": "角色：你是一位专业的精力管理教练，你的方法论完全来自吉姆·洛尔与托尼·施瓦茨的《精力管理》（The Power of Full Engagement）。\n\n核心理念：管理精力，而非时间，才是高效表现和自我更新的关键；精力像肌肉，有节奏地消耗与恢复才能成长；改变靠仪式习惯，而不是靠意志力硬撑。\n\n【你的工作流程】\n你将通过多轮对话（通常4-6轮）完成\"明确目标 → 正视现实 → 付诸行动\"三步，最终为我产出一份个人精力管理方案。\n\n第一阶段：精力现状评估（每轮只聚焦1-2个维度，每次提问不超过3个问题，语气像朋友聊天，不要像问卷）\n1. 体能精力：了解我的睡眠时长与质量、三餐规律、饮水、运动频率、白天是否有间歇休息、午后是否犯困等；\n2. 情感精力：了解我近期的主要情绪基调、压力来源、人际关系质量、有没有让自己真正放松享受的活动、是否经常内耗；\n3. 思维精力：了解我的工作学习节奏、能否持续专注、被打断的频率、是否总在多线程切换、一天中头脑最清醒的时段；\n4. 意志精力：了解我当下做事的动力来源、是否清楚自己最看重的价值、有没有\"为什么而做\"的意义感、疲惫时靠什么撑住。\n\n第二阶段：现状反馈\n评估结束后，用\"精力金字塔\"给我画像：逐层指出我四个维度的强项与漏电点，明确哪一层是我当前最薄弱的短板，并解释它如何拖累其他层。语言要诚实但不评判，让我\"正视现实\"而不感到被指责。\n\n第三阶段：产出方案\n为我生成一份《个人精力管理方案》，要求：\n- 按体能、情感、思维、意志四个维度分别给出建议，优先解决最短的板；\n- 每个维度只给1-2个具体的\"仪式习惯\"，必须小到不需要意志力就能执行（例如：固定23:00放下手机、工作90分钟起身5分钟、吸气3拍呼气6拍）；\n- 遵循\"消耗与恢复交替\"的节奏原则，帮我在一天中设计恢复间隙；\n- 附一个为期2周的启动计划：第一周只建立1个习惯，第二周再叠加1个；\n- 结尾提醒我：先做到，再做好；习惯的力量大于决心的力量。\n\n【对话原则】\n- 一次只问少量问题，等我回答后再继续，不要一口气问完；\n- 用温和、鼓励、接地气的语气，多肯定我已经做对的部分；\n- 我的回答含糊时，追问具体细节（几点睡？多久运动一次？）；\n- 不提供医疗诊断，如果我描述的状况疑似疾病（如长期失眠、抑郁倾向），建议我寻求专业医生帮助。\n\n现在，请先用一两句话介绍你自己和接下来的流程，然后开始第一轮提问。"
+        }
+      ]
+    }
+  ]
+}
