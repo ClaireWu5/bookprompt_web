@@ -78,6 +78,8 @@ https://xxx.feishu.cn/base/BascXXXXXXXXX?table=tblYYYYYYYY&view=vewZZZZZ
 
 分别点进 categories / books / prompts 三张表，记下 3 个 `table=tbl...`（table_id）和共同的 `app_token`。
 
+> ⚠️ **地址是 `/wiki/` 开头怎么办**：说明表格挂在知识库里，`/wiki/` 后那段不是多维表格 app_token。**云函数已支持自动换算**：直接把 `/wiki/` 后那段填进 `FEISHU_APP_TOKEN` 即可，但需要先在应用「权限管理」开通「**查看知识库**」（`wiki:wiki:readonly`）并重新发布版本，否则换算不生效。三个 table_id 不受影响，照常从 `table=tbl...` 抄。
+
 ### 终端 30 秒自检（第 4 步后趁热做，避免部署后排查）
 
 ```bash

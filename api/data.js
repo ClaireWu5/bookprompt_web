@@ -45,12 +45,12 @@ async function getTenantAccessToken() {
   return json.tenant_access_token;
 }
 
-async function listRecords(token, tableId) {
+async function listRecords(token, appToken, tableId) {
   const fieldsList = [];
   let pageToken = "";
   do {
     const url = new URL(
-      `${HOST}/open-apis/bitable/v1/apps/${CFG.appToken}/tables/${tableId}/records`
+      `${HOST}/open-apis/bitable/v1/apps/${appToken}/tables/${tableId}/records`
     );
     url.searchParams.set("page_size", "500");
     if (pageToken) url.searchParams.set("page_token", pageToken);
@@ -63,6 +63,29 @@ async function listRecords(token, tableId) {
     pageToken = json.data.has_more ? json.data.page_token : "";
   } while (pageToken);
   return fieldsList;
+}
+
+// 知识库里的多维表格：/wiki/ 链接中的 token 并非 app_token，
+// 这里先尝试通过知识库 API 换算出真实 app_token（需要 wiki:wiki:readonly 权限），
+// 换算失败则按原始 token 使用（兼容直接填 Basc... 的情况）。
+let resolvedAppToken = null;
+
+async function getAppToken(token) {
+  if (resolvedAppToken) return resolvedAppToken;
+  let appToken = CFG.appToken;
+  try {
+    const res = await fetch(
+      `${HOST}/open-apis/wiki/v2/spaces/get_node?token=${encodeURIComponent(CFG.appToken)}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const json = await res.json();
+    const node = json?.data?.node;
+    if (json.code === 0 && node && node.obj_type === "bitable" && node.obj_token) {
+      appToken = node.obj_token;
+    }
+  } catch { /* 忽略：直接使用原始 token */ }
+  resolvedAppToken = appToken;
+  return appToken;
 }
 
 // ---------- 字段值规整 ----------
@@ -97,10 +120,11 @@ export default async function handler(req, res) {
     if (missing.length) throw new Error(`缺少环境变量: ${missing.join(", ")}`);
 
     const token = await getTenantAccessToken();
+    const appToken = await getAppToken(token);
     const [catRows, bookRows, promptRows] = await Promise.all([
-      listRecords(token, CFG.tableCategories),
-      listRecords(token, CFG.tableBooks),
-      listRecords(token, CFG.tablePrompts),
+      listRecords(token, appToken, CFG.tableCategories),
+      listRecords(token, appToken, CFG.tableBooks),
+      listRecords(token, appToken, CFG.tablePrompts),
     ]);
 
     const categories = catRows
@@ -139,6 +163,17 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", "public, max-age=60");
     res.status(200).json({ categories, books });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    const msg = String(e.message);
+    const hints = [];
+    if (/not exist|not found|1254040|1254030|base token/i.test(msg)) {
+      hints.push("app_token 疑似不对：若填的是知识库 /wiki/ 链接里的 token，请在「权限管理」开通「查看知识库」(wiki:wiki:readonly) 并重新发布应用版本，让服务端能自动换算");
+    }
+    if (/permission|forbidden|无权限|91403|access denied/i.test(msg)) {
+      hints.push("权限不足：请确认 ① 多维表格已「添加文档应用」并给「可阅读」权限 ② bitable:app:readonly 与 wiki:wiki:readonly 已开通且已发布版本");
+    }
+    if (/21001|platform policy/i.test(msg)) {
+      hints.push("飞书平台策略拦截：若是国际版 Lark，请设置环境变量 FEISHU_HOST=https://open.larksuite.com 后 Redeploy");
+    }
+    res.status(500).json({ error: msg, hints });
   }
 }
