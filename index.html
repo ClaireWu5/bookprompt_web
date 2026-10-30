@@ -756,18 +756,33 @@ window.addEventListener("hashchange", route);
    INIT — 加载 data.json 后渲染
 ========================================================= */
 async function initData(){
+  let data = null;
+
+  // 1) 优先走飞书数据接口（部署到 Vercel 后生效，改飞书表格即改网页）
   try{
-    const res = await fetch("data.json");
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    CATEGORIES = data.categories || [];
-    BOOKS = data.books || [];
-  }catch(e){
-    document.getElementById("app").innerHTML =
-      '<div class="empty" style="padding:100px 28px">DATA LOAD FAILED — 无法加载 data.json<br>请通过本地服务器（python3 -m http.server）访问，而非直接双击文件</div>';
-    console.error(e);
-    return;
+    const res = await fetch("api/data");
+    if(res.ok){
+      const j = await res.json();
+      if(j && (j.books || j.categories)) data = j;
+    }
+  }catch(e){ /* 静默，走本地兜底 */ }
+
+  // 2) 兜底：本地静态服务器没有 /api/data，读 data.json
+  if(!data){
+    try{
+      const res = await fetch("data.json");
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      data = await res.json();
+    }catch(e){
+      document.getElementById("app").innerHTML =
+        '<div class="empty" style="padding:100px 28px">DATA LOAD FAILED — 无法加载数据<br>请通过本地服务器（python3 -m http.server）访问，而非直接双击文件</div>';
+      console.error(e);
+      return;
+    }
   }
+
+  CATEGORIES = data.categories || [];
+  BOOKS = data.books || [];
   applyStaticText();
   route();
 }
